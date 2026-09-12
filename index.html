@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RotaExpress — sistema de triagem, cálculo de frete e gestão de encomendas com integração à API ViaCEP.">
+  <meta name="author" content="Seu Nome Completo">
+  <title>RotaExpress | Gestão de Encomendas e Frete</title>
+
+  <!-- Folha de estilos autoral (CSS3 puro + Flexbox + Grid) -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===================================================================
+       CABEÇALHO SEMÂNTICO
+       =================================================================== -->
+  <header class="topo">
+    <div class="topo__marca">
+      <span class="topo__logo" aria-hidden="true">📦</span>
+      <div>
+        <h1>RotaExpress</h1>
+        <p>Triagem, cálculo de frete e gestão de encomendas</p>
+      </div>
+    </div>
+    <p class="topo__selo">Projeto 01 • Desenvolvimento Web</p>
+  </header>
+
+  <main>
+
+    <!-- =================================================================
+         PAINEL DE INDICADORES (contadores reativos)
+         ================================================================= -->
+    <section class="painel" aria-labelledby="titulo-painel">
+      <h2 class="secao__titulo" id="titulo-painel">Painel de controle</h2>
+
+      <div class="indicadores">
+        <div class="indicador indicador--total">
+          <span class="indicador__rotulo">Encomendas</span>
+          <strong class="indicador__valor" id="ind-total">0</strong>
+        </div>
+
+        <div class="indicador indicador--pendente">
+          <span class="indicador__rotulo">Pendentes</span>
+          <strong class="indicador__valor" id="ind-pendentes">0</strong>
+        </div>
+
+        <div class="indicador indicador--transito">
+          <span class="indicador__rotulo">Em trânsito</span>
+          <strong class="indicador__valor" id="ind-transito">0</strong>
+        </div>
+
+        <div class="indicador indicador--entregue">
+          <span class="indicador__rotulo">Entregues</span>
+          <strong class="indicador__valor" id="ind-entregues">0</strong>
+        </div>
+
+        <div class="indicador indicador--faturamento">
+          <span class="indicador__rotulo">Faturamento</span>
+          <strong class="indicador__valor" id="ind-faturamento">R$ 0,00</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         FORMULÁRIO DE CADASTRO (validação nativa ativa)
+         ================================================================= -->
+    <section class="secao-formulario" aria-labelledby="titulo-formulario">
+      <h2 class="secao__titulo" id="titulo-formulario">Nova encomenda</h2>
+
+      <form id="form-encomenda" class="formulario" novalidate="false">
+
+        <!-- Destinatário -->
+        <div class="campo">
+          <label for="destinatario">Destinatário</label>
+          <input
+            type="text"
+            id="destinatario"
+            name="destinatario"
+            placeholder="Ex.: Maria Souza"
+            autocomplete="name"
+            required
+            minlength="3"
+            maxlength="60">
+        </div>
+
+        <!-- CEP + consulta assíncrona ao ViaCEP -->
+        <div class="campo">
+          <label for="cep">CEP</label>
+          <div class="campo__linha">
+            <input
+              type="text"
+              id="cep"
+              name="cep"
+              placeholder="00000-000"
+              autocomplete="postal-code"
+              inputmode="numeric"
+              required
+              maxlength="9"
+              pattern="[0-9]{5}-?[0-9]{3}">
+            <button type="button" class="btn btn--secundario" id="btn-buscar-cep">Buscar</button>
+          </div>
+          <p class="feedback" id="feedback-cep" role="status" aria-live="polite"></p>
+        </div>
+
+        <!-- Logradouro / Bairro -->
+        <div class="campo-grupo">
+          <div class="campo">
+            <label for="logradouro">Logradouro</label>
+            <input type="text" id="logradouro" name="logradouro" placeholder="Rua / Avenida" required maxlength="80">
+          </div>
+          <div class="campo">
+            <label for="bairro">Bairro</label>
+            <input type="text" id="bairro" name="bairro" placeholder="Bairro" maxlength="60">
+          </div>
+        </div>
+
+        <!-- Cidade / UF -->
+        <div class="campo-grupo">
+          <div class="campo">
+            <label for="cidade">Cidade</label>
+            <input type="text" id="cidade" name="cidade" placeholder="Cidade" required maxlength="60">
+          </div>
+          <div class="campo">
+            <label for="uf">UF</label>
+            <input type="text" id="uf" name="uf" placeholder="DF" required minlength="2" maxlength="2" pattern="[A-Za-z]{2}">
+          </div>
+        </div>
+
+        <!-- Peso / Modalidade -->
+        <div class="campo-grupo">
+          <div class="campo">
+            <label for="peso">Peso (kg)</label>
+            <input type="number" id="peso" name="peso" placeholder="Ex.: 2.5" required min="0.1" max="100" step="0.1" inputmode="decimal">
+          </div>
+          <div class="campo">
+            <label for="modalidade">Modalidade</label>
+            <!-- As opções são injetadas dinamicamente via JavaScript -->
+            <select id="modalidade" name="modalidade" required></select>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primario btn--bloco">Cadastrar encomenda</button>
+
+        <p class="feedback" id="feedback-form" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- =================================================================
+         LISTAGEM DINÂMICA DE ENCOMENDAS
+         ================================================================= -->
+    <section class="secao-lista" aria-labelledby="titulo-lista">
+      <h2 class="secao__titulo" id="titulo-lista">Encomendas registradas</h2>
+
+      <p class="estado-vazio" id="estado-vazio">
+        Nenhuma encomenda cadastrada até o momento. Utilize o formulário para iniciar a triagem.
+      </p>
+
+      <div class="cards" id="lista-encomendas"></div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================
+       RODAPÉ SEMÂNTICO
+       =================================================================== -->
+  <footer class="rodape">
+    <p>RotaExpress &copy; 2026 — Projeto 01 de Desenvolvimento Web (CEUB) — API de CEP: ViaCEP</p>
+  </footer>
+
+  <!-- Camada lógica: POO + Fetch API -->
+  <script src="js/script.js"></script>
+</body>
+</html>
