@@ -1,0 +1,520 @@
+/* =====================================================================
+   RotaExpress — Folha de estilos autoral
+   CSS3 puro + Flexbox + Grid + Media Queries (mobile / tablet / desktop)
+   ===================================================================== */
+
+/* ---------- Variáveis globais ---------- */
+:root {
+  --cor-primaria: #1f4e79;
+  --cor-primaria-escura: #163a5a;
+  --cor-destaque: #f0a500;
+  --cor-fundo: #f4f6fa;
+  --cor-superficie: #ffffff;
+  --cor-texto: #1c2430;
+  --cor-texto-suave: #5b6879;
+  --cor-borda: #dde3ec;
+
+  --cor-pendente: #f0a500;
+  --cor-transito: #2b7bd4;
+  --cor-entregue: #2e9e5b;
+  --cor-erro: #d23f3f;
+
+  --raio: 10px;
+  --sombra: 0 2px 12px rgba(28, 36, 48, 0.08);
+  --transicao: 0.25s ease;
+}
+
+/* ---------- Reset básico ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =====================================================================
+   CABEÇALHO
+   ===================================================================== */
+.topo {
+  background: linear-gradient(135deg, var(--cor-primaria), var(--cor-primaria-escura));
+  color: #fff;
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: var(--sombra);
+}
+
+.topo__marca {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.topo__logo {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.topo h1 {
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.topo__marca p {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.topo__selo {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* =====================================================================
+   ESTRUTURA PRINCIPAL
+   ===================================================================== */
+main {
+  flex: 1;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.secao__titulo {
+  font-size: 1.15rem;
+  color: var(--cor-primaria);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--cor-borda);
+}
+
+/* =====================================================================
+   PAINEL DE INDICADORES — CSS Grid
+   ===================================================================== */
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+}
+
+.indicador {
+  background: var(--cor-superficie);
+  border-radius: var(--raio);
+  padding: 1rem;
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  border-left: 4px solid var(--cor-borda);
+  transition: transform var(--transicao);
+}
+
+.indicador:hover {
+  transform: translateY(-2px);
+}
+
+.indicador__rotulo {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+}
+
+.indicador__valor {
+  font-size: 1.5rem;
+  color: var(--cor-texto);
+}
+
+.indicador--total { border-left-color: var(--cor-primaria); }
+.indicador--pendente { border-left-color: var(--cor-pendente); }
+.indicador--transito { border-left-color: var(--cor-transito); }
+.indicador--entregue { border-left-color: var(--cor-entregue); }
+.indicador--faturamento { border-left-color: var(--cor-destaque); }
+
+/* =====================================================================
+   FORMULÁRIO
+   ===================================================================== */
+.formulario {
+  background: var(--cor-superficie);
+  border-radius: var(--raio);
+  padding: 1.5rem;
+  box-shadow: var(--sombra);
+  display: grid;
+  gap: 1.1rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1.5px solid var(--cor-borda);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--cor-texto);
+  background: #fff;
+  transition: border-color var(--transicao), box-shadow var(--transicao);
+}
+
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.12);
+}
+
+.campo input:invalid:not(:placeholder-shown) {
+  border-color: var(--cor-erro);
+}
+
+/* Grupos de campos: 1 coluna no mobile, 2 no desktop */
+.campo-grupo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.campo__linha {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.campo__linha input {
+  flex: 1;
+}
+
+/* =====================================================================
+   BOTÕES
+   ===================================================================== */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--transicao), transform var(--transicao), opacity var(--transicao);
+}
+
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.btn--primario {
+  background: var(--cor-primaria);
+  color: #fff;
+}
+.btn--primario:hover:not(:disabled) { background: var(--cor-primaria-escura); }
+
+.btn--secundario {
+  background: var(--cor-destaque);
+  color: #1c2430;
+}
+.btn--secundario:hover:not(:disabled) { background: #d69400; }
+
+.btn--bloco { width: 100%; }
+
+.btn--acao {
+  font-size: 0.78rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 6px;
+}
+
+.btn--avancar { background: var(--cor-transito); color: #fff; }
+.btn--avancar:hover { background: #1f5fa5; }
+
+.btn--excluir { background: #fbe9e9; color: var(--cor-erro); }
+.btn--excluir:hover { background: #f5cccc; }
+
+/* =====================================================================
+   FEEDBACK / MENSAGENS
+   ===================================================================== */
+.feedback {
+  font-size: 0.82rem;
+  min-height: 1.1rem;
+  color: var(--cor-texto-suave);
+}
+
+.feedback--erro { color: var(--cor-erro); font-weight: 600; }
+.feedback--ok { color: var(--cor-entregue); font-weight: 600; }
+.feedback--carregando { color: var(--cor-transito); font-weight: 600; }
+
+/* =====================================================================
+   LISTAGEM DE CARDS — CSS Grid
+   ===================================================================== */
+.estado-vazio {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--cor-texto-suave);
+  background: var(--cor-superficie);
+  border-radius: var(--raio);
+  border: 2px dashed var(--cor-borda);
+  font-size: 0.9rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.card {
+  background: var(--cor-superficie);
+  border-radius: var(--raio);
+  padding: 1.1rem;
+  box-shadow: var(--sombra);
+  border-top: 5px solid var(--cor-borda);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  animation: surgir 0.3s ease;
+}
+
+@keyframes surgir {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Diferenciação visual por modalidade */
+.card--standard     { border-top-color: #6c7a89; }
+.card--expressa     { border-top-color: var(--cor-destaque); }
+.card--prioritaria  { border-top-color: #c0392b; }
+
+.card__topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.card__id {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--cor-texto-suave);
+  letter-spacing: 0.5px;
+}
+
+.card__destinatario {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cor-texto);
+  word-break: break-word;
+}
+
+.card__modalidade {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: #eef2f7;
+  color: var(--cor-primaria);
+  white-space: nowrap;
+}
+
+.card__endereco {
+  font-size: 0.83rem;
+  color: var(--cor-texto-suave);
+  line-height: 1.45;
+}
+
+.card__dados {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--cor-borda);
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.card__dado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.card__dado span {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+  font-weight: 600;
+}
+
+.card__dado strong {
+  font-size: 0.92rem;
+}
+
+/* Selo de status */
+.status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.status--Pendente     { background: #fdf1d6; color: #8a5a00; }
+.status--transito     { background: #dceafa; color: #14508f; }
+.status--entregue     { background: #d8f0e1; color: #1e6b3d; }
+
+.card__acoes {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.card__acoes .btn {
+  flex: 1;
+  min-width: 110px;
+}
+
+/* =====================================================================
+   RODAPÉ
+   ===================================================================== */
+.rodape {
+  text-align: center;
+  padding: 1.2rem 1rem;
+  background: var(--cor-primaria-escura);
+  color: #c9d6e5;
+  font-size: 0.78rem;
+}
+
+/* =====================================================================
+   RESPONSIVIDADE
+   ===================================================================== */
+
+/* ---------- Smartphones (até 480px) ---------- */
+@media (max-width: 480px) {
+  .topo {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.1rem 1rem;
+  }
+
+  .topo__marca {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .topo h1 { font-size: 1.25rem; }
+
+  main { padding: 1rem 0.7rem 2rem; gap: 1.5rem; }
+
+  .indicadores {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .indicador__valor { font-size: 1.2rem; }
+
+  .formulario { padding: 1rem; }
+
+  .campo__linha { flex-direction: column; }
+
+  .card__dados { grid-template-columns: 1fr 1fr; }
+
+  .card__acoes .btn { min-width: 100%; }
+}
+
+/* ---------- Tablets (481px a 768px) ---------- */
+@media (min-width: 481px) and (max-width: 768px) {
+  main { padding: 1.5rem 1.2rem 2.5rem; }
+
+  .indicadores {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .campo-grupo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cards {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+/* ---------- Desktops (acima de 769px) ---------- */
+@media (min-width: 769px) {
+  main {
+    padding: 2rem 1.5rem 3rem;
+    grid-template-columns: 1fr;
+    gap: 2.2rem;
+  }
+
+  .indicadores {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .campo-grupo {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Formulário e lista lado a lado em telas grandes */
+  .secao-formulario,
+  .secao-lista {
+    width: 100%;
+  }
+
+  .cards {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* ---------- Layout amplo (a partir de 1000px) ---------- */
+@media (min-width: 1000px) {
+  main {
+    grid-template-columns: minmax(360px, 420px) 1fr;
+    grid-template-areas:
+      "painel   painel"
+      "form     lista";
+    align-items: start;
+    column-gap: 2rem;
+  }
+
+  .painel          { grid-area: painel; }
+  .secao-formulario { grid-area: form; }
+  .secao-lista      { grid-area: lista; }
+
+  /* O formulário acompanha a rolagem em telas largas */
+  .secao-formulario {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
